@@ -8,10 +8,19 @@ import {
 } from './fkMath';
 import { movableJoints, parseUrdf } from './fkUrdf';
 import { drawRobot } from './fkRender';
+import ReferenceVideo from './ReferenceVideo';
 
 const CHOREOS = {
-  orangeJustice: { label: 'Orange Justice', table: orangeJusticeTable },
-  scuba: { label: 'Scuba', table: scubaTable },
+  orangeJustice: {
+    label: 'Orange Justice',
+    table: orangeJusticeTable,
+    reference: { id: '-3NOJklp56U', title: 'Orange Justice', credit: 'Gamerish' },
+  },
+  scuba: {
+    label: 'Scuba',
+    table: scubaTable,
+    reference: { id: 'ED9J92dsPCU', title: 'Scuba', credit: 'Champ Media' },
+  },
   swing: { label: 'Swing', table: swingTable },
 };
 
@@ -71,6 +80,8 @@ export default function FkDemo() {
   useEffect(() => { dirty.current = true; }, [showFrames]);
 
   const table = CHOREOS[choreo].table;
+  const reference = CHOREOS[choreo].reference;
+  const [resetKey, setResetKey] = useState(0);
   const stateByName = useMemo(() => {
     const map = new Map();
     for (const s of table.states) map.set(s.name, s);
@@ -107,6 +118,7 @@ export default function FkDemo() {
     s.manual = false;
     s.elapsed = 0;
     setPlaying(false);
+    setResetKey((k) => k + 1);
     dirty.current = true;
   }, [table]);
 
@@ -281,17 +293,29 @@ export default function FkDemo() {
         </div>
       </div>
 
-      <div className="demo-canvas" ref={wrapRef}>
-        <canvas
-          ref={canvasRef}
-          onPointerDown={onPointerDown}
-          onPointerMove={onPointerMove}
-          onPointerUp={onPointerUp}
-          onPointerCancel={onPointerUp}
-          className="fk"
-          aria-label={`${robot.name}, posed by forward kinematics`}
-          role="img"
-        />
+      <div className={reference ? 'fk-stage has-ref' : 'fk-stage'}>
+        <div className="demo-canvas" ref={wrapRef}>
+          <canvas
+            ref={canvasRef}
+            onPointerDown={onPointerDown}
+            onPointerMove={onPointerMove}
+            onPointerUp={onPointerUp}
+            onPointerCancel={onPointerUp}
+            className="fk"
+            aria-label={`${robot.name}, posed by forward kinematics`}
+            role="img"
+          />
+        </div>
+        {reference && (
+          <ReferenceVideo
+            videoId={reference.id}
+            title={reference.title}
+            credit={reference.credit}
+            playing={playing}
+            speed={speed}
+            resetKey={resetKey}
+          />
+        )}
       </div>
       <p className="demo-hint">
         Drag the robot to orbit it. Move any slider to take over and pose it by hand; the sliders are the
