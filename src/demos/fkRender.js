@@ -198,8 +198,14 @@ export function drawRobot(ctx, { robot, world, camera, width, height, background
   ctx.fillStyle = background;
   ctx.fillRect(0, 0, width, height);
 
+  // Painter's algorithm: far to near. The floor goes first regardless: it is one large face,
+  // and its centroid can sort in front of the base as the robot drives, hiding the far tread.
+  const GROUND_Z = 0.012;
+  const onGround = (item) => item.kind === 'poly' && item.pts.every((p) => p[2] <= GROUND_Z);
   const depth = (item) => -dot(sub(item.centroid || item.at || item.from, cam.eye), cam.forward);
-  for (const item of items.sort((a, b) => depth(a) - depth(b))) {
+  const byDepth = (a, b) => depth(a) - depth(b);
+  const ordered = [...items.filter(onGround).sort(byDepth), ...items.filter((i) => !onGround(i)).sort(byDepth)];
+  for (const item of ordered) {
     if (item.kind === 'poly') {
       const screen = item.pts.map(project);
       if (screen.some((p) => !p)) continue;
