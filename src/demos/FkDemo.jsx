@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import urdfText from './assets/dual_arm_robot.urdf?raw';
-import danceTable from './assets/choreo-dance.json';
-import twistTable from './assets/choreo-twist.json';
+import orangeJusticeTable from './assets/choreo-orange-justice.json';
+import scubaTable from './assets/choreo-scuba.json';
 import swingTable from './assets/choreo-swing.json';
 import {
   identityPose, jointEdges, linkTransforms, quinticCoefficients, quinticEvaluate, translationOf,
@@ -10,8 +10,8 @@ import { movableJoints, parseUrdf } from './fkUrdf';
 import { drawRobot } from './fkRender';
 
 const CHOREOS = {
-  dance: { label: 'Dance', table: danceTable },
-  twist: { label: 'Twist and fan', table: twistTable },
+  orangeJustice: { label: 'Orange Justice', table: orangeJusticeTable },
+  scuba: { label: 'Scuba', table: scubaTable },
   swing: { label: 'Swing', table: swingTable },
 };
 
@@ -48,7 +48,7 @@ export default function FkDemo() {
     .map((g) => ({ ...g, joints: joints.filter((j) => g.match(j.name)) }))
     .filter((g) => g.joints.length), [joints]);
 
-  const [choreo, setChoreo] = useState('dance');
+  const [choreo, setChoreo] = useState('orangeJustice');
   const [playing, setPlaying] = useState(false);
   const [speed, setSpeed] = useState(1);
   const [distance, setDistance] = useState(1.9);
