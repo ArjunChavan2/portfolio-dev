@@ -1,17 +1,26 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import urdfText from './assets/dual_arm_robot.urdf?raw';
-import danceTable from './assets/choreo-dance.json';
-import twistTable from './assets/choreo-twist.json';
+import orangeJusticeTable from './assets/choreo-orange-justice.json';
+import scubaTable from './assets/choreo-scuba.json';
 import swingTable from './assets/choreo-swing.json';
 import {
   identityPose, jointEdges, linkTransforms, quinticCoefficients, quinticEvaluate, translationOf,
 } from './fkMath';
 import { movableJoints, parseUrdf } from './fkUrdf';
 import { drawRobot } from './fkRender';
+import ReferenceVideo from './ReferenceVideo';
 
 const CHOREOS = {
-  dance: { label: 'Dance', table: danceTable },
-  twist: { label: 'Twist and fan', table: twistTable },
+  orangeJustice: {
+    label: 'Orange Justice',
+    table: orangeJusticeTable,
+    reference: { id: '-3NOJklp56U', title: 'Orange Justice', credit: 'Gamerish' },
+  },
+  scuba: {
+    label: 'Scuba',
+    table: scubaTable,
+    reference: { id: 'ED9J92dsPCU', title: 'Scuba', credit: 'Champ Media' },
+  },
   swing: { label: 'Swing', table: swingTable },
 };
 
@@ -48,7 +57,7 @@ export default function FkDemo() {
     .map((g) => ({ ...g, joints: joints.filter((j) => g.match(j.name)) }))
     .filter((g) => g.joints.length), [joints]);
 
-  const [choreo, setChoreo] = useState('dance');
+  const [choreo, setChoreo] = useState('orangeJustice');
   const [playing, setPlaying] = useState(false);
   const [speed, setSpeed] = useState(1);
   const [distance, setDistance] = useState(1.9);
@@ -71,6 +80,8 @@ export default function FkDemo() {
   useEffect(() => { dirty.current = true; }, [showFrames]);
 
   const table = CHOREOS[choreo].table;
+  const reference = CHOREOS[choreo].reference;
+  const [resetKey, setResetKey] = useState(0);
   const stateByName = useMemo(() => {
     const map = new Map();
     for (const s of table.states) map.set(s.name, s);
@@ -107,6 +118,7 @@ export default function FkDemo() {
     s.manual = false;
     s.elapsed = 0;
     setPlaying(false);
+    setResetKey((k) => k + 1);
     dirty.current = true;
   }, [table]);
 
@@ -281,17 +293,29 @@ export default function FkDemo() {
         </div>
       </div>
 
-      <div className="demo-canvas" ref={wrapRef}>
-        <canvas
-          ref={canvasRef}
-          onPointerDown={onPointerDown}
-          onPointerMove={onPointerMove}
-          onPointerUp={onPointerUp}
-          onPointerCancel={onPointerUp}
-          className="fk"
-          aria-label={`${robot.name}, posed by forward kinematics`}
-          role="img"
-        />
+      <div className={reference ? 'fk-stage has-ref' : 'fk-stage'}>
+        <div className="demo-canvas" ref={wrapRef}>
+          <canvas
+            ref={canvasRef}
+            onPointerDown={onPointerDown}
+            onPointerMove={onPointerMove}
+            onPointerUp={onPointerUp}
+            onPointerCancel={onPointerUp}
+            className="fk"
+            aria-label={`${robot.name}, posed by forward kinematics`}
+            role="img"
+          />
+        </div>
+        {reference && (
+          <ReferenceVideo
+            videoId={reference.id}
+            title={reference.title}
+            credit={reference.credit}
+            playing={playing}
+            speed={speed}
+            resetKey={resetKey}
+          />
+        )}
       </div>
       <p className="demo-hint">
         Drag the robot to orbit it. Move any slider to take over and pose it by hand; the sliders are the
