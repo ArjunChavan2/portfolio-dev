@@ -194,17 +194,21 @@ export default function FkDemo() {
     return () => cancelAnimationFrame(frame.current);
   }, [robot, render, step, table]);
 
-  // Size the canvas to its container, and redraw when the colour scheme flips.
+  // Size the canvas to its container, and redraw when the colour scheme flips. Beside a
+  // reference clip the canvas fills the panel's height; on its own it sets its own height.
+  const hasRef = Boolean(reference);
   useEffect(() => {
     const wrap = wrapRef.current;
     const canvas = canvasRef.current;
     if (!wrap || !canvas) return undefined;
     const resize = () => {
       const dpr = window.devicePixelRatio || 1;
-      const width = Math.max(240, wrap.clientWidth);
-      const height = Math.round(Math.min(460, Math.max(300, width * 0.62)));
-      canvas.width = width * dpr;
-      canvas.height = height * dpr;
+      const width = Math.max(240, Math.floor(wrap.clientWidth));
+      const height = hasRef
+        ? Math.max(260, Math.floor(wrap.clientHeight))
+        : Math.round(Math.min(460, Math.max(300, width * 0.62)));
+      canvas.width = Math.round(width * dpr);
+      canvas.height = Math.round(height * dpr);
       canvas.style.width = `${width}px`;
       canvas.style.height = `${height}px`;
       dirty.current = true;
@@ -216,7 +220,7 @@ export default function FkDemo() {
     const repaint = () => { dirty.current = true; };
     mq.addEventListener('change', repaint);
     return () => { ro.disconnect(); mq.removeEventListener('change', repaint); };
-  }, []);
+  }, [hasRef]);
 
   const drag = useRef(null);
   const onPointerDown = (e) => {
