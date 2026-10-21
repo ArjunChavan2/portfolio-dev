@@ -61,6 +61,27 @@ function splitStep(s) {
   return [s.slice(0, at), body.charAt(0).toUpperCase() + body.slice(1)];
 }
 
+// How it works as connected stages, for projects that describe a pipeline.
+function Pipeline({ steps, pipeline }) {
+  const byLabel = new Map(steps.map((s) => splitStep(s)));
+  const stage = (name, caption) => (
+    <li key={name} className="pd-stage">
+      {caption && <span className="pd-stage-caption">{caption}</span>}
+      <h3>{name}</h3>
+      <p>{byLabel.get(name)}</p>
+      {pipeline.tech[name] && <span className="pd-stage-tech">{pipeline.tech[name]}</span>}
+    </li>
+  );
+  return (
+    <>
+      <ol className="pd-flow">{pipeline.flow.map((name) => stage(name))}</ol>
+      <ul className="pd-flow-side">
+        {Object.entries(pipeline.side).map(([name, caption]) => stage(name, caption))}
+      </ul>
+    </>
+  );
+}
+
 export default function ProjectDetail() {
   const { slug } = useParams();
   const project = projectBySlug(slug);
@@ -136,7 +157,14 @@ export default function ProjectDetail() {
       <Media media={media} title={project.title} />
 
       <div className="container pd-body">
-        {project.howItWorks.length > 0 && (
+        {project.pipeline && (
+          <section className="pd-section" aria-labelledby="how-title">
+            <h2 id="how-title">How it works</h2>
+            <Pipeline steps={project.howItWorks} pipeline={project.pipeline} />
+          </section>
+        )}
+
+        {!project.pipeline && project.howItWorks.length > 0 && (
           <section className="pd-section" aria-labelledby="how-title">
             <h2 id="how-title">How it works</h2>
             <ol className="pd-steps">
@@ -154,7 +182,7 @@ export default function ProjectDetail() {
           </section>
         )}
 
-        {project.tech.length > 0 && (
+        {!project.pipeline && project.tech.length > 0 && (
           <section className="pd-section" aria-labelledby="tech-title">
             <h2 id="tech-title">Built with</h2>
             <dl className="pd-tech">

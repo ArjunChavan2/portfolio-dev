@@ -68,38 +68,33 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="section section-subtle">
-        <div className="container">
-          <ul className="focus-list">
-            {FOCUS.map((f) => (
-              <li key={f.title} className="focus-row">
-                <h2>{f.title}</h2>
-                <p>{f.body}</p>
-              </li>
-            ))}
-          </ul>
-        </div>
-      </section>
-
       <section className="section">
         <div className="container">
           <div className="section-head">
-            <h2>Featured projects</h2>
+            <h2>Selected work</h2>
             <Link to="/projects" className="text-link">All projects →</Link>
           </div>
-          {lead && <LeadProject project={lead} />}
-          {rest.length > 0 && (
-            <div className="card-grid pair">
-              {rest.map((p) => <ProjectCard key={p.slug} project={p} />)}
-            </div>
-          )}
+          <div className="bento">
+            {lead && <LeadProject project={lead} />}
+            {rest.slice(0, 2).map((p) => <ProjectCard key={p.slug} project={p} />)}
+            <ul className="focus-tiles">
+              {FOCUS.map((f, i) => (
+                <li key={f.title} className="focus-tile">
+                  <span className="focus-num">0{i + 1}</span>
+                  <h3>{f.title}</h3>
+                  <p>{f.body}</p>
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
       </section>
 
       <section className="section section-subtle">
-        <div className="container">
-          <div className="section-head">
+        <div className="container split">
+          <div className="split-head">
             <h2>Where I've worked</h2>
+            <p>From ML research at MIT Lincoln Lab to leading a product team today.</p>
             <Link to="/experience" className="text-link">Full experience →</Link>
           </div>
           <ol className="roles">
@@ -120,7 +115,6 @@ export default function Home() {
       <section className="section">
         <div className="container">
           <div className="closing">
-            <AuroraBackground />
             <h2>Hiring for an internship or new-grad role?</h2>
             <p>I'd be glad to talk about how I can help your team.</p>
             <div className="closing-actions">

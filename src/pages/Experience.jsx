@@ -159,7 +159,6 @@ export default function Experience() {
       <section className="xp-section xp-last">
         <div className="container">
           <div className="closing">
-            <AuroraBackground />
             <h2>Need the one-page version?</h2>
             <p>The PDF has the same roles and skills on a single page, ready to share.</p>
             <div className="closing-actions">

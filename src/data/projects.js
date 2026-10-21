@@ -32,6 +32,7 @@ const DETAILS = {
     media: {
       type: 'demo',
       demo: 'fk',
+      poster: asset('media/forward-kinematics-poster.jpg'),
       blurb:
         'The robot, its joint limits, and every link pose below come from the project itself: the demo robot\'s '
         + 'URDF is parsed in the browser, and the transform and forward-kinematics code is a port of the '
@@ -52,6 +53,16 @@ const DETAILS = {
       { name: 'MediaPipe', use: 'Pose tracking for the video-to-choreography tool' },
       { name: 'pytest', use: 'Per-module unit tests and wire-level integration tests' },
     ],
+    // Draws How it works as a flow: stages keyed by their howItWorks label, each with the tech it runs on.
+    // Steps left out of `flow` sit beside it, captioned by `side`.
+    pipeline: {
+      flow: ['Parse', 'Solve', 'Serve', 'Gateway', 'Watch'],
+      side: { Choreograph: 'Feeds the viewer', Test: 'Covers every stage' },
+      tech: {
+        Parse: 'Python', Solve: 'Python', Serve: 'asyncio', Gateway: 'TCP + JSON',
+        Watch: 'Browser', Choreograph: 'MediaPipe', Test: 'pytest',
+      },
+    },
     links: [],
   },
   'Underwater Inspection ROV': {
@@ -197,6 +208,7 @@ export const projects = [...resume.projects, ...SITE_ONLY].map((p) => {
     media: d.media || null,
     howItWorks: d.howItWorks || [],
     tech: d.tech || [],
+    pipeline: d.pipeline || null,
     links: d.links || [],
     badge: d.badge || null,
     highlight: d.highlight || null,

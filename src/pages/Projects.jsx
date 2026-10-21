@@ -40,23 +40,37 @@ function LeadProject({ project }) {
   );
 }
 
+// Every project gets a full-width showcase: big media, its headline stat first, then the story.
 function ProjectRow({ project }) {
   const tag = mediaLabel(project);
+  // Lead with the stat only when it's a number; a thumb without a poster already shows it.
+  const stat = project.media?.poster && /\d/.test(project.highlight?.value) && project.highlight;
   return (
     <li>
-      <Link to={`/projects/${project.slug}`} className="pp-row">
-        <div className="pp-row-thumb"><ProjectThumb project={project} /></div>
-        <div className="pp-row-main">
+      <Link to={`/projects/${project.slug}`} className="pp-show">
+        <div className="pp-show-media">
+          <ProjectThumb project={project} />
+          {tag && <span className="pp-show-tag">{tag}</span>}
+        </div>
+        <div className="pp-show-body">
+          <div className="card-meta">
+            <span>{project.category}</span>
+            <span>{project.date}</span>
+          </div>
+          {stat && (
+            <p className="pp-show-stat">
+              <strong>{stat.value}</strong>
+              <span>{stat.label}</span>
+            </p>
+          )}
           <h3>{project.title}</h3>
           <p>{project.summary}</p>
           <ul className="tags">
             {project.stack.slice(0, 4).map((t) => <li key={t}>{t}</li>)}
           </ul>
-        </div>
-        <div className="pp-row-meta">
-          <span className="date">{project.date}</span>
-          <span className="pp-row-cat">{project.category}</span>
-          {tag && <span className="pill">{tag}</span>}
+          <span className="lead-cta">
+            {project.media?.type === 'demo' ? 'Open the interactive demo' : tag === 'Video' ? 'Watch the video' : 'Read the project'} →
+          </span>
         </div>
       </Link>
     </li>
