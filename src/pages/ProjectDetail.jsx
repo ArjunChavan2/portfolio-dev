@@ -2,7 +2,6 @@ import '../styles/project-detail.css';
 import { lazy, Suspense } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { projects, projectBySlug } from '../data/projects';
-import BlurText from '../components/BlurText';
 import AuroraBackground from '../components/AuroraBackground';
 import ProjectThumb from '../components/ProjectThumb';
 import NotFound from './NotFound';
@@ -17,7 +16,7 @@ function Media({ media, title }) {
   if (!media) return null;
   if (media.type === 'video') {
     return (
-      <section className="pd-band" aria-label={`${title} video`}>
+      <section className="pd-band on-dark" aria-label={`${title} video`}>
         <div className="container">
           <figure className="pd-video">
             <div className="pd-video-frame">
@@ -37,7 +36,7 @@ function Media({ media, title }) {
     const Demo = DEMOS[media.demo];
     if (!Demo) return null;
     return (
-      <section id="demo" className="pd-band pd-demo" aria-labelledby="demo-title">
+      <section id="demo" className="pd-band pd-demo on-dark" aria-labelledby="demo-title">
         <div className="container">
           <div className="pd-demo-head">
             <h2 id="demo-title">Try it in the browser</h2>
@@ -103,7 +102,7 @@ export default function ProjectDetail() {
           <div className="pd-head-grid">
             <div className="pd-head-copy">
               {showBadge && <p className="pd-badge">{badge}</p>}
-              <h1 key={project.slug}><BlurText text={project.title} stagger={45} /></h1>
+              <h1 key={project.slug}>{project.title}</h1>
               <p className="pd-lede">{project.summary}</p>
               {(links.length > 0 || hasDemo) && (
                 <div className="pd-actions">

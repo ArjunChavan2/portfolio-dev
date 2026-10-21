@@ -14,13 +14,15 @@ function AStarThumb() {
     const r = search(g, w, h, s, t, 'astar');
     return { grid: g, path: r.path, closed: r.events.filter(([k]) => k === 1).map(([, c]) => c) };
   }, []);
-  const rect = (c, cls) => <rect key={`${cls}${c}`} className={cls} x={c % w} y={(c / w) | 0} width="1" height="1" />;
+  const rect = (c, cls, i) => (
+    <rect key={`${cls}${c}`} className={cls} x={c % w} y={(c / w) | 0} width="1" height="1" style={i === undefined ? undefined : { '--i': i }} />
+  );
   return (
     <svg viewBox={`0 0 ${w} ${h}`} preserveAspectRatio="xMidYMid slice" className="thumb-svg" aria-hidden="true">
       <rect className="t-bg" width={w} height={h} />
       {closed.map((c) => rect(c, 't-closed'))}
       {Array.from(grid, (v, c) => (v === WALL ? rect(c, 't-wall') : null))}
-      {path.map((c) => rect(c, 't-path'))}
+      {path.map((c, i) => rect(c, 't-path', i))}
     </svg>
   );
 }

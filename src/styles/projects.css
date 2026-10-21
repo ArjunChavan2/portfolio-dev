@@ -24,7 +24,7 @@
   cursor: pointer; transition: background-color .15s, border-color .15s, color .15s;
 }
 .page-projects .pp-chip:hover { border-color: var(--text); color: var(--text); }
-.page-projects .pp-chip[aria-pressed="true"] { background: var(--text); border-color: var(--text); color: var(--bg); }
+.page-projects .pp-chip[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
 .page-projects .pp-chip:focus-visible { outline: 2px solid var(--text); outline-offset: 2px; border-radius: 999px; }
 .page-projects .pp-chip-count {
   min-width: 20px; padding: 1px 6px; border-radius: 999px; text-align: center;
@@ -32,7 +32,7 @@
   background: var(--bg-subtle); color: var(--muted);
 }
 .page-projects .pp-chip[aria-pressed="true"] .pp-chip-count {
-  background: color-mix(in srgb, var(--bg) 18%, transparent); color: var(--bg);
+  background: color-mix(in srgb, var(--on-accent) 14%, transparent); color: var(--on-accent);
 }
 
 /* Section head for the current set. */
@@ -48,13 +48,14 @@
 .page-projects .pp-show {
   display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); overflow: hidden;
   background: var(--surface); border: 1px solid var(--border); border-radius: 20px; box-shadow: var(--shadow);
-  color: var(--text); transition: border-color .2s, box-shadow .2s;
+  color: var(--text); transition: border-color .2s, box-shadow .2s, transform .2s;
 }
 .page-projects .pp-list > li:nth-child(even) .pp-show { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); }
 .page-projects .pp-list > li:nth-child(even) .pp-show-media { order: 2; border-right: 0; border-left: 1px solid var(--border); }
 .page-projects .pp-show:hover {
   text-decoration: none; color: var(--text); box-shadow: var(--shadow-hover);
-  border-color: color-mix(in srgb, var(--text) 30%, var(--border));
+  border-color: var(--accent); transform: translateY(-3px);
+  box-shadow: var(--shadow-hover), 0 0 0 1px var(--accent);
 }
 .page-projects .pp-show-media {
   position: relative; display: grid; align-content: center; overflow: hidden;
@@ -104,6 +105,6 @@
 }
 
 /* "How my work connects" section above the list. */
-.page-projects .pp-connect { padding: 24px 0 0; }
+.page-projects .pp-connect { padding: 72px 0 80px; margin-bottom: 56px; }
 .page-projects .pp-connect-lede { max-width: 62ch; color: var(--text-2); font-size: 17px; margin: -8px 0 28px; }
 .page-projects .pp-head h2 { scroll-margin-top: 88px; }

@@ -2,7 +2,6 @@ import { Link } from 'react-router-dom';
 import resume from '../data/resume.json';
 import { projects } from '../data/projects';
 import ProjectCard from '../components/ProjectCard';
-import BlurText from '../components/BlurText';
 import AuroraBackground from '../components/AuroraBackground';
 import AStarLive from '../components/AStarLive';
 import ProjectThumb from '../components/ProjectThumb';
@@ -14,11 +13,12 @@ const FOCUS = [
   { title: 'Technical leadership', body: 'Co-leading a 10-engineer team: sprint planning, code review with merge authority, and demos to stakeholders.' },
 ];
 
+// The hero already runs the live A* replay, so the card shows the still thumb.
 function LeadProject({ project }) {
   const live = project.media?.demo === 'astar';
   return (
     <Link to={`/projects/${project.slug}`} className="lead-card">
-      <div className="lead-media">{live ? <AStarLive /> : <ProjectThumb project={project} />}</div>
+      <div className="lead-media"><ProjectThumb project={project} /></div>
       <div className="lead-body">
         <div className="card-meta">
           <span>{project.category}</span>
@@ -39,14 +39,17 @@ export default function Home() {
   const featured = projects.filter((p) => p.featured);
   const lead = featured.find((p) => p.media?.demo === 'astar') || featured[0];
   const rest = featured.filter((p) => p !== lead);
+  const astar = projects.find((p) => p.media?.demo === 'astar');
   return (
     <>
       <section className="hero">
         <AuroraBackground />
+        <div className="container">
+          <p className="kicker">Computer Science · {resume.education.school}</p>
+          <h1>Software engineer building products and the systems behind them.</h1>
+        </div>
         <div className="container hero-grid">
           <div className="hero-copy">
-            <p className="kicker">Computer Science · {resume.education.school}</p>
-            <h1><BlurText text="Software engineer building products and the systems behind them." /></h1>
             <p className="lede">
               I'm {resume.name.split(' ')[0]}, a computer science student graduating {resume.education.date.replace('Expected ', '')}.
               I'm currently {currentRole.title} at {currentOrg}, co-leading the team building a healthcare scheduling platform.
@@ -62,13 +65,19 @@ export default function Home() {
               <li><a href={`mailto:${contact.email}`}>{contact.email}</a></li>
             </ul>
           </div>
+          {astar && (
+            <Link to={`/projects/${astar.slug}`} className="hero-live">
+              <AStarLive />
+              <span className="hero-live-cap"><span className="hero-live-dot" aria-hidden="true" />Live: the A* planner from my robotics runtime →</span>
+            </Link>
+          )}
           <div className="hero-photo">
             <img src={HEADSHOT} alt={`Portrait of ${resume.name}`} width="360" height="480" />
           </div>
         </div>
       </section>
 
-      <section className="section">
+      <section className="section on-dark">
         <div className="container">
           <div className="section-head">
             <h2>Selected work</h2>

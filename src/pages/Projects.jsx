@@ -3,7 +3,6 @@ import { useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { projects } from '../data/projects';
 import ProjectThumb from '../components/ProjectThumb';
-import BlurText from '../components/BlurText';
 import AuroraBackground from '../components/AuroraBackground';
 import WorkPath from '../components/WorkPath';
 
@@ -103,7 +102,7 @@ export default function Projects() {
         <AuroraBackground />
         <div className="container">
           <p className="pp-span">{projects.length} projects, {span}</p>
-          <h1><BlurText text="Things I've built, in software and in hardware." /></h1>
+          <h1>Things I've built, in software and in hardware.</h1>
           <p className="lede">
             Coursework, hackathons, and team builds across robotics, machine learning, hardware, and the web.
             Some include an interactive demo or video.
@@ -111,7 +110,7 @@ export default function Projects() {
         </div>
       </section>
 
-      <section className="pp-connect" aria-labelledby="pp-connect-title">
+      <section className="pp-connect on-dark" aria-labelledby="pp-connect-title">
         <div className="container">
           <div className="section-head pp-head">
             <h2 id="pp-connect-title">How my work connects</h2>
