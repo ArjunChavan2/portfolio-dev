@@ -62,7 +62,7 @@
   border-right: 1px solid var(--border); background: var(--bg-subtle);
 }
 .page-projects .pp-show-media .thumb { border: 0; }
-.page-projects .pp-show:hover .thumb img { transform: scale(1.04); }
+.page-projects .pp-show:hover .thumb :is(img, video) { transform: scale(1.04); }
 .page-projects .pp-show-tag {
   position: absolute; left: 16px; top: 16px; padding: 5px 11px; border-radius: 999px;
   font-size: 12px; font-weight: 600; color: #f3f1ec; background: rgb(5 7 13 / 0.72); backdrop-filter: blur(6px);

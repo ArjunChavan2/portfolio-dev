@@ -188,8 +188,8 @@ p a:hover { text-decoration-color: currentColor; }
 .pill { flex-shrink: 0; font-size: 12px; font-weight: 600; color: var(--text); background: var(--bg-subtle); padding: 4px 10px; border-radius: 999px; }
 
 .thumb { aspect-ratio: 16 / 9; background: var(--bg-subtle); border-bottom: 1px solid var(--border); overflow: hidden; }
-.thumb img, .thumb-svg { width: 100%; height: 100%; object-fit: cover; transition: transform .5s ease; }
-.project-card:hover .thumb img { transform: scale(1.04); }
+.thumb img, .thumb video, .thumb-svg { width: 100%; height: 100%; object-fit: cover; transition: transform .5s ease; }
+.project-card:hover .thumb :is(img, video) { transform: scale(1.04); }
 .thumb-plain {
   display: grid; place-items: center;
   background:

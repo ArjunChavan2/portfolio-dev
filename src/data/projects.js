@@ -32,6 +32,7 @@ const DETAILS = {
       type: 'demo',
       demo: 'fk',
       poster: asset('media/forward-kinematics-poster.jpg'),
+      preview: asset('media/forward-kinematics-preview.mp4'),
       blurb:
         'The robot, its joint limits, and every link pose below come from the project itself: the demo robot\'s '
         + 'URDF is parsed in the browser, and the transform and forward-kinematics code is a port of the '
