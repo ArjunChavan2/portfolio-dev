@@ -428,15 +428,28 @@ a:hover { color: var(--accent-hover); text-decoration: underline; text-underline
 .fk-joint input { width: 100%; }
 .fk-joint output { font-size: 12px; font-variant-numeric: tabular-nums; color: var(--muted); }
 
-/* Reference clip beside the robot: a portrait YouTube Short, stacked below on phones */
+/* Reference clip inside the robot's panel: robot on the left, the Short on the right */
 .fk-stage { display: grid; gap: 16px; align-items: start; }
-.fk-stage.has-ref { grid-template-columns: minmax(0, 1fr) clamp(180px, 25%, 250px); }
+.fk-stage.has-ref {
+  grid-template-columns: minmax(0, 1fr) clamp(180px, 25%, 250px);
+  gap: 0;
+  align-items: stretch;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  overflow: hidden;
+  background: var(--demo-bg);
+}
+.fk-stage.has-ref .demo-canvas { position: relative; min-height: 300px; }
+.fk-stage.has-ref .demo-canvas canvas { position: absolute; inset: 0; border: 0; border-radius: 0; }
 .fk-ref { margin: 0; }
-.fk-ref-frame { position: relative; aspect-ratio: 9 / 16; width: 100%; border-radius: 6px; overflow: hidden; border: 1px solid var(--border); background: #000; }
+.fk-stage.has-ref .fk-ref { display: flex; flex-direction: column; border-left: 1px solid var(--border); }
+.fk-ref-frame { position: relative; aspect-ratio: 9 / 16; width: 100%; overflow: hidden; background: #000; }
 .fk-ref-player, .fk-ref-player iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
 .fk-ref-fallback { position: absolute; inset: 0; display: grid; place-items: center; padding: 16px; text-align: center; color: #fff; font-size: 14px; }
-.fk-ref figcaption { font-size: 12px; color: var(--muted); margin-top: 6px; }
+.fk-ref figcaption { margin: 0; padding: 8px 10px; font-size: 12px; color: var(--muted); }
 @media (max-width: 720px) {
   .fk-stage.has-ref { grid-template-columns: 1fr; }
-  .fk-ref { width: min(100%, 260px); margin: 0 auto; }
+  .fk-stage.has-ref .demo-canvas { min-height: 320px; }
+  .fk-stage.has-ref .fk-ref { align-items: center; border-left: 0; border-top: 1px solid var(--border); }
+  .fk-ref-frame { width: min(100%, 260px); }
 }

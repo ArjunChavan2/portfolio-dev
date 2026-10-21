@@ -194,7 +194,13 @@ export function drawRobot(ctx, { robot, world, camera, width, height, background
     }
   }
 
+  // Keep the caller's transform: it carries the device pixel ratio, and resetting it here
+  // painted only the top-left quarter of a 2x canvas, leaving the rest uncleared. Clear the
+  // whole bitmap, then paint the background in CSS pixels.
+  ctx.save();
   ctx.setTransform(1, 0, 0, 1, 0, 0);
+  ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+  ctx.restore();
   ctx.fillStyle = background;
   ctx.fillRect(0, 0, width, height);
 
