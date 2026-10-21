@@ -10,7 +10,7 @@ import { HEADSHOT, RESUME_PDF, contact, currentRole, currentOrg } from '../site'
 const FOCUS = [
   { title: 'Full-stack product', body: 'React and Node.js applications taken from Figma spec to production, including build tooling and release process.' },
   { title: 'Robotics and autonomy', body: 'Path planning, PID control, and computer vision for navigation, from simulation to hardware in the water.' },
-  { title: 'Technical leadership', body: 'Co-leading a 10-engineer team: sprint planning, code review with merge authority, and demos to stakeholders.' },
+  { title: 'Technical leadership', body: 'Co-led a 10-engineer team: sprint planning, code review with merge authority, and demos to stakeholders.' },
 ];
 
 function LeadProject({ project }) {
@@ -51,7 +51,9 @@ export default function Home() {
           <div className="hero-copy">
             <p className="lede">
               I'm {resume.name.split(' ')[0]}, a computer science student graduating {resume.education.date.replace('Expected ', '')}.
-              I'm currently {currentRole.title} at {currentOrg}, co-leading the team building a healthcare scheduling platform.
+              {/present/i.test(currentRole.date)
+                ? ` I'm currently ${currentRole.title} at ${currentOrg}, co-leading the team building a healthcare scheduling platform. `
+                : ` Most recently I was ${currentRole.title} at ${currentOrg}, co-leading the team that built a healthcare scheduling platform. `}
               My work spans full-stack web, machine learning, and robotics.
             </p>
             <div className="hero-actions">
@@ -102,7 +104,7 @@ export default function Home() {
         <div className="container split">
           <div className="split-head">
             <h2>Where I've worked</h2>
-            <p>From ML research at MIT Lincoln Lab to leading a product team today.</p>
+            <p>From ML research at MIT Lincoln Lab to leading a product team.</p>
             <Link to="/experience" className="text-link">Full experience →</Link>
           </div>
           <ol className="roles">
