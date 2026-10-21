@@ -19,7 +19,6 @@ const DETAILS = {
         + 'against uninformed Dijkstra search for the same shortest path.',
     },
     links: [{ label: 'Source on GitHub', href: 'https://github.com/ArjunChavan2/A-Star-Path-Planning' }],
-    featured: true,
   },
   'Forward Kinematics for URDF Robots': {
     slug: 'forward-kinematics',
@@ -64,6 +63,7 @@ const DETAILS = {
       },
     },
     links: [],
+    featured: true,
   },
   'Underwater Inspection ROV': {
     slug: 'underwater-rov',
@@ -79,8 +79,8 @@ const DETAILS = {
     slug: 'financial-dashboard',
     category: 'Full stack',
     summary:
-      'A personal finance app built at CMU TartanHacks that turns budgeting into a game: an AI-driven virtual pet, real-time quests, '
-      + 'and insights generated from Capital One account data. Won 1st Place in the Visa Track.',
+      'Won 1st Place in the Visa Track at CMU TartanHacks with a personal finance app that turns budgeting into a game: '
+      + 'an AI-driven virtual pet, real-time quests, and insights generated from Capital One account data.',
     badge: '1st Place · Visa Track',
     highlight: { value: '1st Place', label: 'Visa Track, CMU TartanHacks' },
     media: { type: 'video', src: asset('media/financial-dashboard.mp4'), poster: asset('media/financial-dashboard-poster.jpg'), caption: 'A quest completes and Scotty\'s happiness climbs, recreated from the app\'s own screens and sprites.' },

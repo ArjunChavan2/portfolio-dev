@@ -13,9 +13,8 @@ const FOCUS = [
   { title: 'Technical leadership', body: 'Co-leading a 10-engineer team: sprint planning, code review with merge authority, and demos to stakeholders.' },
 ];
 
-// The hero already runs the live A* replay, so the card shows the still thumb.
 function LeadProject({ project }) {
-  const live = project.media?.demo === 'astar';
+  const live = project.media?.type === 'demo';
   return (
     <Link to={`/projects/${project.slug}`} className="lead-card">
       <div className="lead-media"><ProjectThumb project={project} /></div>
@@ -37,7 +36,7 @@ function LeadProject({ project }) {
 
 export default function Home() {
   const featured = projects.filter((p) => p.featured);
-  const lead = featured.find((p) => p.media?.demo === 'astar') || featured[0];
+  const lead = featured.find((p) => p.media?.demo === 'fk') || featured[0];
   const rest = featured.filter((p) => p !== lead);
   const astar = projects.find((p) => p.media?.demo === 'astar');
   return (

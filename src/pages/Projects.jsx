@@ -10,7 +10,7 @@ const mediaLabel = (p) => (p.media?.type === 'demo' ? 'Interactive demo' : p.med
 
 // The lead of any filtered set: the live demo if it's in the set, then a featured project, then the newest.
 function pickLead(set) {
-  return set.find((p) => p.featured && p.media?.demo === 'astar') || set.find((p) => p.featured) || set[0];
+  return set.find((p) => p.media?.demo === 'astar') || set.find((p) => p.featured) || set[0];
 }
 
 const years = projects.flatMap((p) => (p.date.match(/\d{4}/g) || []).map(Number));
