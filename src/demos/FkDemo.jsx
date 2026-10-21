@@ -8,17 +8,22 @@ import {
 } from './fkMath';
 import { movableJoints, parseUrdf } from './fkUrdf';
 import { drawRobot } from './fkRender';
+import { OUTFITS } from './fkOutfits';
 import ReferenceVideo from './ReferenceVideo';
 
 const CHOREOS = {
   orangeJustice: {
     label: 'Orange Justice',
     table: orangeJusticeTable,
-    reference: { id: '-3NOJklp56U', title: 'Orange Justice', credit: 'Gamerish' },
+    outfit: 'tee',
+    // The robot at 3x keeps time with the clip at its own 1x, so that is the default.
+    speed: 3,
+    reference: { id: '-3NOJklp56U', title: 'Orange Justice', credit: 'Gamerish', rate: 1 / 3 },
   },
   scuba: {
     label: 'Scuba',
     table: scubaTable,
+    outfit: 'tank',
     reference: { id: 'ED9J92dsPCU', title: 'Scuba', credit: 'Champ Media' },
   },
   swing: { label: 'Swing', table: swingTable },
@@ -38,7 +43,6 @@ const GROUPS = [
 ];
 
 const label = (name) => name.replace(/_/g, ' ');
-const cssVar = (el, name) => getComputedStyle(el).getPropertyValue(name).trim() || '#ffffff';
 
 export default function FkDemo() {
   const canvasRef = useRef(null);
@@ -59,8 +63,8 @@ export default function FkDemo() {
 
   const [choreo, setChoreo] = useState('orangeJustice');
   const [playing, setPlaying] = useState(false);
-  const [speed, setSpeed] = useState(1);
-  const [distance, setDistance] = useState(1.9);
+  const [speed, setSpeed] = useState(CHOREOS.orangeJustice.speed ?? 1);
+  const [distance, setDistance] = useState(2.8);
   const [showFrames, setShowFrames] = useState(false);
   const [readout, setReadout] = useState({ links: 0, hand: [0, 0, 0], pose: 'home' });
 
@@ -69,7 +73,8 @@ export default function FkDemo() {
     positions: {}, velocities: {}, accels: {}, segments: new Map(),
     state: null, elapsed: 0, playing: false, speed: 1, manual: false,
   });
-  const camera = useRef({ azimuth: -0.9, elevation: 0.26, distance: 1.9, target: [0, 0, 0.62] });
+  // The project viewer's camera: in front of the robot (it faces +x), slightly to its left.
+  const camera = useRef({ azimuth: 0.263, elevation: 0.306, distance: 2.8, target: [0, 0, 0.45] });
   const dirty = useRef(true);
   const frame = useRef(0);
   const uiClock = useRef(0);
@@ -159,11 +164,11 @@ export default function FkDemo() {
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     const world = linkTransforms(robot.root, jointEdges(robot, sim.current.positions), identityPose());
     drawRobot(ctx, {
-      robot, world, camera: camera.current, width, height,
-      background: cssVar(canvas, '--demo-bg'), showFrames,
+      robot, world, camera: camera.current, width, height, showFrames,
+      extras: OUTFITS[CHOREOS[choreo].outfit] || [],
     });
     return world;
-  }, [robot, showFrames]);
+  }, [robot, showFrames, choreo]);
 
   useEffect(() => {
     if (!robot) return undefined;
@@ -267,7 +272,7 @@ export default function FkDemo() {
             Choreography
             <select
               value={choreo}
-              onChange={(e) => { setChoreo(e.target.value); setPlaying(false); }}
+              onChange={(e) => { setChoreo(e.target.value); setSpeed(CHOREOS[e.target.value].speed ?? 1); setPlaying(false); }}
             >
               {Object.entries(CHOREOS).map(([key, c]) => <option key={key} value={key}>{c.label}</option>)}
             </select>
@@ -318,6 +323,8 @@ export default function FkDemo() {
             playing={playing}
             speed={speed}
             resetKey={resetKey}
+            rate={reference.rate}
+            onPlayingChange={setPlaying}
           />
         )}
       </div>
