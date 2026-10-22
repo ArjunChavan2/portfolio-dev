@@ -36,7 +36,7 @@ npm run sync-resume    # regenerate src/data/resume.json, then commit it
 - Projects include everything in `content.js`, benched ones too: a portfolio has room the one-page resume doesn't.
 
 Project pages (`/projects/:slug`) combine each synced entry with the portfolio-only detail in
-`src/data/projects.js`: slug, category, summary, headline stat, links, and media. Site-only projects that
+`src/data/projects.js`: category, summary, headline stat, links, and media. URL slugs live in `src/data/slugs.json`. Site-only projects that
 aren't on the resume (like Assignment Calendar) live in `SITE_ONLY` in the same file.
 
 - **Video:** put the file in `public/media/` and set `media: { type: 'video', src: asset('media/…'), poster }`.
