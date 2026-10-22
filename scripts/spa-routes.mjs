@@ -16,6 +16,11 @@ const shell = fs.readFileSync(path.join(dist, 'index.html'), 'utf8');
 const slugify = (s) => s.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
 const projectsSrc = fs.readFileSync(path.join(root, 'src/data/projects.js'), 'utf8');
 const detailTitles = [...projectsSrc.matchAll(/^ {2}'([^']+)': \{\n {4}slug: '([^']+)'/gm)];
+// A key the pattern misses would get a slugified route that 404s, so fail the build instead.
+const detailKeys = projectsSrc.match(/^ {2}['"].*: \{$/gm) || [];
+if (detailKeys.length !== detailTitles.length) {
+  throw new Error(`spa-routes: read ${detailTitles.length} slugs from ${detailKeys.length} DETAILS entries in src/data/projects.js. Keep each key in single quotes with slug on the next line.`);
+}
 const slugByTitle = new Map(detailTitles.map(([, title, slug]) => [title, slug]));
 const resume = JSON.parse(fs.readFileSync(path.join(root, 'src/data/resume.json'), 'utf8'));
 const titles = [...resume.projects.map((p) => p.title), ...slugByTitle.keys()];

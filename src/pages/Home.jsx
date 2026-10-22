@@ -39,6 +39,11 @@ export default function Home() {
   const lead = featured.find((p) => p.media?.demo === 'fk') || featured[0];
   const rest = featured.filter((p) => p !== lead);
   const astar = projects.find((p) => p.media?.demo === 'astar');
+  const now = /present/i.test(currentRole.date);
+  // The platform describes Altheros only; a newer role synced to the top gets the plain sentence.
+  const work = currentOrg.startsWith('Altheros')
+    ? `, co-leading the team ${now ? 'building' : 'that built'} a healthcare scheduling platform`
+    : '';
   return (
     <>
       <section className="hero">
@@ -51,9 +56,7 @@ export default function Home() {
           <div className="hero-copy">
             <p className="lede">
               I'm {resume.name.split(' ')[0]}, a computer science student graduating {resume.education.date.replace('Expected ', '')}.
-              {/present/i.test(currentRole.date)
-                ? ` I'm currently ${currentRole.title} at ${currentOrg}, co-leading the team building a healthcare scheduling platform. `
-                : ` Most recently I was ${currentRole.title} at ${currentOrg}, co-leading the team that built a healthcare scheduling platform. `}
+              {` ${now ? "I'm currently" : 'Most recently I was'} ${currentRole.title} at ${currentOrg}${work}. `}
               My work spans full-stack web, machine learning, and robotics.
             </p>
             <div className="hero-actions">
