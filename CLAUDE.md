@@ -6,7 +6,7 @@ and **prod** `ArjunChavan2/portfolio` (promoted from dev, see below).
 
 ## Commands
 - `npx vite --port 5199`: dev server
-- `npm run lint` (oxlint) and `npm run build`: both must pass before any push;
+- `npm run lint` (oxlint), `npm test` (node:test, demo math) and `npm run build`: all must pass before any push;
   CI runs the same on push to `main`
 - `npm run sync-resume`: regenerates `src/data/resume.json` from `~/ResumeDaily/content.js`
 
