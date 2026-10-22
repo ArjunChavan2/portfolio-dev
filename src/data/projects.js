@@ -2,11 +2,12 @@
 // Keyed by the resume title so a re-sync never orphans a project; anything not
 // listed here still renders, just without media or a summary.
 import resume from './resume.json';
+// Short URL slugs by title, in JSON so scripts/spa-routes.mjs can read them without Vite.
+import SLUGS from './slugs.json';
 import { asset } from '../site';
 
 const DETAILS = {
   'A* Path Planner and Robotics Runtime': {
-    slug: 'astar-path-planner',
     category: 'Robotics',
     summary:
       'A ROS-style robotics runtime written from scratch: publish/subscribe topics and services served over a TCP and JSON gateway, '
@@ -21,7 +22,6 @@ const DETAILS = {
     links: [{ label: 'Source on GitHub', href: 'https://github.com/ArjunChavan2/A-Star-Path-Planning' }],
   },
   'Forward Kinematics for URDF Robots': {
-    slug: 'forward-kinematics',
     category: 'Robotics',
     summary:
       'From a robot\'s description file to a robot in motion. A URDF parser and transform math written from scratch place every '
@@ -67,7 +67,6 @@ const DETAILS = {
     featured: true,
   },
   'Underwater Inspection ROV': {
-    slug: 'underwater-rov',
     category: 'Embedded',
     summary:
       'A four-thruster remotely operated vehicle built by a four-person team. I wrote the C++ Arduino control system that turns '
@@ -77,7 +76,6 @@ const DETAILS = {
     featured: true,
   },
   'Gamified Financial Dashboard': {
-    slug: 'financial-dashboard',
     category: 'Full stack',
     summary:
       'Won 1st Place in the Visa Track at CMU TartanHacks with a personal finance app that turns budgeting into a game: '
@@ -89,7 +87,6 @@ const DETAILS = {
     featured: true,
   },
   'ICU Mortality Prediction': {
-    slug: 'icu-mortality-prediction',
     category: 'Machine learning',
     summary:
       'A logistic regression model predicting in-hospital mortality from ICU records for 10,000 patients, with feature engineering '
@@ -99,7 +96,6 @@ const DETAILS = {
     links: [],
   },
   'Memory-Mapped FPGA Peripheral Interface': {
-    slug: 'fpga-peripheral-interface',
     category: 'Hardware',
     summary:
       'An ARM Cortex-M4 microcontroller driving LEDs and reading buttons on a Tang Nano FPGA through a 16-bit memory-mapped parallel bus, '
@@ -109,7 +105,6 @@ const DETAILS = {
     links: [],
   },
   'Facial Emotion Recognition': {
-    slug: 'facial-emotion-recognition',
     category: 'Machine learning',
     summary:
       'A real-time emotion classifier that locates facial landmarks with OpenCV and classifies expressions with a deep neural network in TensorFlow.',
@@ -118,7 +113,6 @@ const DETAILS = {
     links: [],
   },
   'BillLess, AI Medical Bill Auditor': {
-    slug: 'billless',
     category: 'Full stack',
     summary:
       'A patient-side agent built at MHacks 2026 that handles a medical bill from start to finish. If the patient has no explanation of '
@@ -150,7 +144,6 @@ const DETAILS = {
     links: [{ label: 'Source on GitHub', href: 'https://github.com/ArjunChavan2/MHACKS_2026' }],
   },
   'Four-Function Calculator': {
-    slug: 'four-function-calculator',
     category: 'Hardware',
     summary:
       'A four-function arithmetic unit in Verilog for an FPGA, using Booth multiplication and repeated-subtraction division, verified against a testbench suite.',
@@ -159,7 +152,6 @@ const DETAILS = {
     links: [],
   },
   'Assignment Calendar': {
-    slug: 'assignment-calendar',
     category: 'Full stack',
     summary:
       'A single calendar of assignment deadlines pulled from multiple course websites, so nothing slips between course pages.',
@@ -201,7 +193,7 @@ export const projects = [...resume.projects, ...SITE_ONLY].map((p) => {
   const stack = p.org.split(', ');
   return {
     ...p,
-    slug: d.slug || slugify(p.title),
+    slug: SLUGS[p.title] || slugify(p.title),
     category: d.category || 'Project',
     summary: d.summary || p.bullets[0],
     stack: stack.filter((s) => !CONTEXT.test(s)),
