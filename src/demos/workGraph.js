@@ -15,7 +15,7 @@
 // deterministic, so the picture is the same on every visit.
 import resume from '../data/resume.json';
 import { projects } from '../data/projects';
-import { endMonth } from '../site';
+import { endMonth } from '../dates';
 
 export const HUB_COST = 1.5;
 const EVIDENCE_PENALTY = 0.6; // one supporting line adds 0.6, two add 0.3, three 0.2

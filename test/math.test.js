@@ -1,4 +1,4 @@
-// The demos' math, checked against hand-worked cases so a broken port fails CI, not the page.
+// The demos' math and the resume dates, checked against hand-worked cases so a broken port fails CI, not the page.
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import {
@@ -55,4 +55,13 @@ test('a walled-off goal returns no path', () => {
   const grid = new Uint8Array(w * h);
   for (let y = 0; y < h; y++) grid[y * w + 2] = WALL;
   assert.deepEqual(search(grid, w, h, 0, w - 1).path, []);
+});
+
+test('date ranges end where the resume says, and Present only matches the word', async () => {
+  const { endMonth, isCurrent } = await import('../src/dates.js');
+  assert.equal(endMonth('Jan 2025 – Apr 2025'), 2025 * 12 + 3);
+  assert.equal(endMonth('Sept 2026'), 2026 * 12 + 8);
+  assert.equal(endMonth('2025'), 2025 * 12 + 11);
+  assert.equal(endMonth('Feb 2026 – Present'), Infinity);
+  assert.equal(isCurrent('Mar 2025 (Presentation)'), false);
 });

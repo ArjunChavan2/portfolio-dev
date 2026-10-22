@@ -2,7 +2,8 @@ import '../styles/experience.css';
 import { Link } from 'react-router-dom';
 import resume from '../data/resume.json';
 import AuroraBackground from '../components/AuroraBackground';
-import { RESUME_PDF, isCurrent } from '../site';
+import { RESUME_PDF } from '../site';
+import { isCurrent } from '../dates';
 
 // "Altheros Capital, Ann Arbor, MI" -> { name: "Altheros Capital", place: "Ann Arbor, MI" }
 function splitOrg(org) {

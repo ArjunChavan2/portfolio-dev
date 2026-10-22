@@ -4,7 +4,8 @@
 import resume from './resume.json';
 // Short URL slugs by title, in JSON so scripts/spa-routes.mjs can read them without Vite.
 import SLUGS from './slugs.json';
-import { asset, endMonth } from '../site';
+import { asset } from '../site';
+import { endMonth } from '../dates';
 
 const DETAILS = {
   'A* Path Planner and Robotics Runtime': {
@@ -198,6 +199,6 @@ export const projects = [...resume.projects, ...SITE_ONLY].map((p) => {
     highlight: d.highlight || null,
     featured: Boolean(d.featured),
   };
-}).sort((a, b) => endMonth(b.date) - endMonth(a.date)); // newest first
+}).sort((a, b) => (endMonth(b.date) - endMonth(a.date)) || 0); // newest first; two Present dates tie, not NaN
 
 export const projectBySlug = (slug) => projects.find((p) => p.slug === slug);

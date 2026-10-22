@@ -5,7 +5,8 @@ import ProjectCard from '../components/ProjectCard';
 import AuroraBackground from '../components/AuroraBackground';
 import AStarLive from '../components/AStarLive';
 import ProjectThumb from '../components/ProjectThumb';
-import { HEADSHOT, RESUME_PDF, contact, currentRole, currentOrg, isCurrent } from '../site';
+import { HEADSHOT, RESUME_PDF, contact, currentRole, currentOrg } from '../site';
+import { isCurrent } from '../dates';
 
 const FOCUS = [
   { title: 'Full-stack product', body: 'React and Node.js applications taken from Figma spec to production, including build tooling and release process.' },
