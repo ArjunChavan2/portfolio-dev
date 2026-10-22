@@ -4,7 +4,7 @@
 import resume from './resume.json';
 // Short URL slugs by title, in JSON so scripts/spa-routes.mjs can read them without Vite.
 import SLUGS from './slugs.json';
-import { asset } from '../site';
+import { asset, endMonth } from '../site';
 
 const DETAILS = {
   'A* Path Planner and Robotics Runtime': {
@@ -179,15 +179,6 @@ const slugify = (s) => s.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|
 // org reads "Python, TCP, JSON, EECS 367": tech stack first, context (course, event, team) last.
 const CONTEXT = /EECS|TartanHacks|MHacks|Team|Project$/;
 
-const MONTHS = ['jan', 'feb', 'mar', 'apr', 'may', 'jun', 'jul', 'aug', 'sep', 'oct', 'nov', 'dec'];
-// Newest first, by the end of the date range ("Jan 2025 – Apr 2025" sorts as Apr 2025).
-function recency(date) {
-  const parts = [...date.toLowerCase().matchAll(/(?:([a-z]{3})[a-z]*\s+)?(\d{4})/g)];
-  if (!parts.length) return 0;
-  const [, mon, year] = parts[parts.length - 1];
-  return Number(year) * 12 + (mon ? MONTHS.indexOf(mon) : 0);
-}
-
 export const projects = [...resume.projects, ...SITE_ONLY].map((p) => {
   const d = DETAILS[p.title] || {};
   const stack = p.org.split(', ');
@@ -207,6 +198,6 @@ export const projects = [...resume.projects, ...SITE_ONLY].map((p) => {
     highlight: d.highlight || null,
     featured: Boolean(d.featured),
   };
-}).sort((a, b) => recency(b.date) - recency(a.date));
+}).sort((a, b) => endMonth(b.date) - endMonth(a.date)); // newest first
 
 export const projectBySlug = (slug) => projects.find((p) => p.slug === slug);
