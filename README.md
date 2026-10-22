@@ -5,7 +5,7 @@ by `.github/workflows/deploy.yml` on every push to `main`.
 
 ## Environments
 
-Two repos, same code, each on its own GitHub Pages site (this repo is prod):
+Two repos, same code (this README included), each on its own GitHub Pages site:
 
 | Repo | Site | Role |
 |---|---|---|
@@ -22,6 +22,7 @@ npm install
 npm run dev        # http://localhost:5173/
 npm run build      # vite build + scripts/spa-routes.mjs
 npm run lint
+npm test           # node:test checks for the demos' kinematics, A* and resume dates
 ```
 
 ## Content
