@@ -227,7 +227,8 @@ export default function FkDemo() {
     const repaint = () => { dirty.current = true; };
     mq.addEventListener('change', repaint);
     const io = new IntersectionObserver(([entry]) => { sim.current.visible = entry.isIntersecting; });
-    io.observe(wrap);
+    // The whole demo, not just the canvas: the sliders below it read the same flag.
+    io.observe(wrap.closest('.demo'));
     return () => { ro.disconnect(); io.disconnect(); mq.removeEventListener('change', repaint); };
   }, [hasRef]);
 
