@@ -16,9 +16,9 @@ const ORIGIN = 'https://arjunchavan2.github.io';
 const esc = (s) => s.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;');
 // Swap in a route's title and description and add Open Graph tags.
 const withMeta = ({ title, description }, route) => shell
-  .replace(/<title>.*?<\/title>/, `<title>${esc(title)}</title>`)
-  .replace(/(<meta name="description" content=")[^"]*"/, `$1${esc(description)}"`)
-  .replace('</head>', `    <meta property="og:title" content="${esc(title)}" />
+  .replace(/<title>.*?<\/title>/, () => `<title>${esc(title)}</title>`)
+  .replace(/(<meta name="description" content=")[^"]*"/, (_, open) => `${open}${esc(description)}"`)
+  .replace('</head>', () => `    <meta property="og:title" content="${esc(title)}" />
     <meta property="og:description" content="${esc(description)}" />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="${ORIGIN}${base}${route}" />
@@ -33,14 +33,18 @@ const readJson = (file) => JSON.parse(fs.readFileSync(path.join(root, file), 'ut
 const slugByTitle = readJson('src/data/slugs.json');
 const titles = [...readJson('src/data/resume.json').projects.map((p) => p.title), ...Object.keys(slugByTitle)];
 const slugs = [...new Set(titles.map((t) => slugByTitle[t] || slugify(t)))];
+const titleBySlug = new Map(titles.map((t) => [slugByTitle[t] || slugify(t), t]));
 const projectBySlug = new Map(readJson('src/data/resume.json').projects.map((p) => [slugByTitle[p.title] || slugify(p.title), p]));
 
 const routes = ['projects', 'experience', 'contact', ...slugs.map((s) => `projects/${s}`)];
 for (const route of routes) {
   const dir = path.join(dist, route);
   fs.mkdirSync(dir, { recursive: true });
-  const proj = projectBySlug.get(route.replace('projects/', ''));
-  const meta = route.startsWith('projects/') && proj ? projectMeta(proj) : PAGES[route] || PAGES.projects;
+  const slug = route.replace('projects/', '');
+  // A site-only project has no resume entry: keep its title, fall back to the generic description.
+  const meta = route.startsWith('projects/')
+    ? projectMeta(projectBySlug.get(slug) || { title: titleBySlug.get(slug), bullets: [] })
+    : PAGES[route];
   fs.writeFileSync(path.join(dir, 'index.html'), withMeta(meta, `${route}/`));
 }
 fs.writeFileSync(path.join(dist, 'index.html'), withMeta(PAGES[''], ''));
