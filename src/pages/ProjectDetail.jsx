@@ -1,6 +1,7 @@
 import '../styles/project-detail.css';
 import Keyterms from '../components/Keyterms';
-import { lazy, Suspense } from 'react';
+import { lazy, Suspense, useEffect } from 'react';
+import { applyMeta, projectMeta } from '../seo';
 import { Link, useParams } from 'react-router-dom';
 import { projects, projectBySlug } from '../data/projects';
 import AuroraBackground from '../components/AuroraBackground';
@@ -85,6 +86,7 @@ function Pipeline({ steps, pipeline }) {
 export default function ProjectDetail() {
   const { slug } = useParams();
   const project = projectBySlug(slug);
+  useEffect(() => { if (project) applyMeta(projectMeta(project)); }, [project]);
   if (!project) return <NotFound />;
 
   const i = projects.indexOf(project);
