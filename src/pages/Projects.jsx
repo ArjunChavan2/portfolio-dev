@@ -7,6 +7,7 @@ import { projects } from '../data/projects';
 import ProjectThumb from '../components/ProjectThumb';
 import AuroraBackground from '../components/AuroraBackground';
 import WorkPath from '../components/WorkPath';
+import LeadProject from '../components/LeadProject';
 
 const mediaLabel = (p) => (p.media?.type === 'demo' ? 'Interactive demo' : p.media?.type === 'video' ? 'Video' : null);
 
@@ -17,30 +18,6 @@ function pickLead(set) {
 
 const years = projects.flatMap((p) => (p.date.match(/\d{4}/g) || []).map(Number));
 const span = years.length ? `${Math.min(...years)} to ${Math.max(...years)}` : '';
-
-function LeadProject({ project }) {
-  const titleVT = useTitleTransition(project.slug);
-  const tag = mediaLabel(project);
-  return (
-    <Link viewTransition to={`/projects/${project.slug}`} className="lead-card pp-lead">
-      <div className="lead-media"><ProjectThumb project={project} /></div>
-      <div className="lead-body">
-        <div className="card-meta">
-          <span>{project.category}</span>
-          <span>{project.date}</span>
-        </div>
-        <h3 style={titleVT}>{project.title}</h3>
-        <p><Keyterms text={project.summary} /></p>
-        <ul className="tags">
-          {project.stack.slice(0, 5).map((t) => <li key={t}>{t}</li>)}
-        </ul>
-        <span className="lead-cta">
-          {project.media?.type === 'demo' ? 'Open the interactive demo' : tag === 'Video' ? 'Watch the video' : 'Read the project'}
-        </span>
-      </div>
-    </Link>
-  );
-}
 
 // Every project gets a full-width showcase: big media, its headline stat first, then the story.
 function ProjectRow({ project }) {
@@ -154,7 +131,7 @@ export default function Projects() {
             </p>
           </div>
 
-          {lead && <LeadProject key={lead.slug} project={lead} />}
+          {lead && <LeadProject key={lead.slug} project={lead} className="lead-card pp-lead" />}
           {rest.length > 0 && (
             <ul className="pp-list">
               {rest.map((p) => <ProjectRow key={p.slug} project={p} />)}

@@ -6,6 +6,7 @@ import resume from './resume.json';
 import SLUGS from './slugs.json';
 import { asset } from '../site';
 import { endMonth } from '../dates';
+import { slugify } from '../slugify';
 
 const DETAILS = {
   'A* Path Planner and Robotics Runtime': {
@@ -164,8 +165,6 @@ const SITE_ONLY = [
     skills: ['Full Stack', 'Web Scraping', 'Calendar API'],
   },
 ];
-
-const slugify = (s) => s.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
 
 // org reads "Python, TCP, JSON, EECS 367": tech stack first, context (course, event, team) last.
 const CONTEXT = /EECS|TartanHacks|MHacks|Team|Project$/;

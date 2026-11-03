@@ -11,6 +11,7 @@ const dist = path.join(root, 'dist');
 const base = process.env.VITE_BASE || '/';
 const shell = fs.readFileSync(path.join(dist, 'index.html'), 'utf8');
 const { PAGES, projectMeta } = await import('../src/seo.js');
+const { slugify } = await import('../src/slugify.js');
 // Link previews need an absolute image URL; the origin is the same for dev and prod.
 const ORIGIN = 'https://arjunchavan2.github.io';
 const esc = (s) => s.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;');
@@ -27,8 +28,7 @@ const withMeta = ({ title, description }, route) => shell
   </head>`);
 
 // Project slugs: explicit ones from src/data/slugs.json, plus the slugified title for
-// any synced project without one. Mirrors slugify() in src/data/projects.js.
-const slugify = (s) => s.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+// any synced project without one (same slugify as src/data/projects.js).
 const readJson = (file) => JSON.parse(fs.readFileSync(path.join(root, file), 'utf8'));
 const slugByTitle = readJson('src/data/slugs.json');
 const titles = [...readJson('src/data/resume.json').projects.map((p) => p.title), ...Object.keys(slugByTitle)];

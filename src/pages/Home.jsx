@@ -1,12 +1,10 @@
-import { useTitleTransition } from '../viewTransition';
 import { Link } from 'react-router-dom';
-import Keyterms from '../components/Keyterms';
 import resume from '../data/resume.json';
 import { projects } from '../data/projects';
 import ProjectCard from '../components/ProjectCard';
+import LeadProject from '../components/LeadProject';
 import AuroraBackground from '../components/AuroraBackground';
 import AStarLive from '../components/AStarLive';
-import ProjectThumb from '../components/ProjectThumb';
 import { HEADSHOT, RESUME_PDF, contact, currentRole, currentOrg } from '../site';
 import { isCurrent } from '../dates';
 
@@ -15,28 +13,6 @@ const FOCUS = [
   { title: 'Robotics and autonomy', body: 'Path planning, PID control, and computer vision for navigation, from simulation to hardware in the water.' },
   { title: 'Technical leadership', body: 'Co-led a 10-engineer team: sprint planning, code review with merge authority, and demos to stakeholders.' },
 ];
-
-function LeadProject({ project }) {
-  const titleVT = useTitleTransition(project.slug);
-  const live = project.media?.type === 'demo';
-  return (
-    <Link viewTransition to={`/projects/${project.slug}`} className="lead-card">
-      <div className="lead-media"><ProjectThumb project={project} /></div>
-      <div className="lead-body">
-        <div className="card-meta">
-          <span>{project.category}</span>
-          <span>{project.date}</span>
-        </div>
-        <h3 style={titleVT}>{project.title}</h3>
-        <p><Keyterms text={project.summary} /></p>
-        <ul className="tags">
-          {project.stack.slice(0, 5).map((t) => <li key={t}>{t}</li>)}
-        </ul>
-        <span className="lead-cta">{live ? 'Open the interactive demo' : 'Read the project'}</span>
-      </div>
-    </Link>
-  );
-}
 
 export default function Home() {
   const featured = projects.filter((p) => p.featured);
