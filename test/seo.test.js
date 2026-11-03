@@ -10,8 +10,9 @@ test('projectMeta strips bold markers and cuts long text at a word with an ellip
   const { title, description } = projectMeta({ title: 'Demo', summary: long, bullets: [] });
   assert.equal(title, 'Demo | Arjun Chavan');
   assert.ok(!description.includes('**'));
-  assert.ok(description.endsWith('…') && description.length <= 156);
-  assert.ok(!/\s…$/.test(description));
+  assert.ok(description.length <= 156);
+  // The cut lands on a whole word: a mid-word cut would end "...wo…".
+  assert.ok(description.endsWith(' word…'));
 });
 
 test('projectMeta falls back to the Projects description when a project has no text', () => {
@@ -21,4 +22,5 @@ test('projectMeta falls back to the Projects description when a project has no t
 test('slugify makes URL-safe slugs and trims dashes', () => {
   assert.equal(slugify('A* Path Planner & Robotics Runtime'), 'a-path-planner-robotics-runtime');
   assert.equal(slugify('  --Hello, World!--  '), 'hello-world');
+  assert.equal(slugify('EECS 373 Lab 2'), 'eecs-373-lab-2'); // digits are kept
 });
