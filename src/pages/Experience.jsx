@@ -161,7 +161,7 @@ export default function Experience() {
             <p>The PDF has the same roles and skills on a single page, ready to share.</p>
             <div className="closing-actions">
               <a href={RESUME_PDF} className="btn btn-primary" target="_blank" rel="noreferrer">Download resume</a>
-              <Link to="/contact" className="btn btn-secondary">Get in touch</Link>
+              <Link viewTransition to="/contact" className="btn btn-secondary">Get in touch</Link>
             </div>
           </div>
         </div>

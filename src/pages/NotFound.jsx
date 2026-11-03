@@ -23,7 +23,7 @@ export default function NotFound() {
         <ul className="nf-links">
           {DESTINATIONS.map((d) => (
             <li key={d.to}>
-              <Link to={d.to} className="nf-link">
+              <Link viewTransition to={d.to} className="nf-link">
                 <span className="nf-link-label">{d.label}</span>
                 <span className="nf-link-note">{d.note}</span>
                 <span className="nf-link-arrow" aria-hidden="true">→</span>

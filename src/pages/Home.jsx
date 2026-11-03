@@ -1,3 +1,4 @@
+import { useTitleTransition } from '../viewTransition';
 import { Link } from 'react-router-dom';
 import Keyterms from '../components/Keyterms';
 import resume from '../data/resume.json';
@@ -16,16 +17,17 @@ const FOCUS = [
 ];
 
 function LeadProject({ project }) {
+  const titleVT = useTitleTransition(project.slug);
   const live = project.media?.type === 'demo';
   return (
-    <Link to={`/projects/${project.slug}`} className="lead-card">
+    <Link viewTransition to={`/projects/${project.slug}`} className="lead-card">
       <div className="lead-media"><ProjectThumb project={project} /></div>
       <div className="lead-body">
         <div className="card-meta">
           <span>{project.category}</span>
           <span>{project.date}</span>
         </div>
-        <h3>{project.title}</h3>
+        <h3 style={titleVT}>{project.title}</h3>
         <p><Keyterms text={project.summary} /></p>
         <ul className="tags">
           {project.stack.slice(0, 5).map((t) => <li key={t}>{t}</li>)}
@@ -62,7 +64,7 @@ export default function Home() {
               My work spans full-stack web, machine learning, and robotics.
             </p>
             <div className="hero-actions">
-              <Link to="/projects" className="btn btn-primary">View projects</Link>
+              <Link viewTransition to="/projects" className="btn btn-primary">View projects</Link>
               <a href={RESUME_PDF} className="btn btn-secondary" target="_blank" rel="noreferrer">Download resume</a>
             </div>
             <ul className="hero-links">
@@ -72,7 +74,7 @@ export default function Home() {
             </ul>
           </div>
           {astar && (
-            <Link to={`/projects/${astar.slug}`} className="hero-live">
+            <Link viewTransition to={`/projects/${astar.slug}`} className="hero-live">
               <AStarLive />
               <span className="hero-live-cap"><span className="hero-live-dot" aria-hidden="true" />Live: the A* planner from my robotics runtime →</span>
             </Link>
@@ -87,7 +89,7 @@ export default function Home() {
         <div className="container">
           <div className="section-head">
             <h2>Selected work</h2>
-            <Link to="/projects" className="text-link">All projects →</Link>
+            <Link viewTransition to="/projects" className="text-link">All projects →</Link>
           </div>
           <div className="bento">
             {lead && <LeadProject project={lead} />}
@@ -110,7 +112,7 @@ export default function Home() {
           <div className="split-head">
             <h2>Where I've worked</h2>
             <p>From ML research at MIT Lincoln Lab to leading a product team.</p>
-            <Link to="/experience" className="text-link">Full experience →</Link>
+            <Link viewTransition to="/experience" className="text-link">Full experience →</Link>
           </div>
           <ol className="roles">
             {resume.experience.map((e) => (
@@ -133,7 +135,7 @@ export default function Home() {
             <h2>Hiring for an internship or new-grad role?</h2>
             <p>I'd be glad to talk about how I can help your team.</p>
             <div className="closing-actions">
-              <Link to="/contact" className="btn btn-primary">Get in touch</Link>
+              <Link viewTransition to="/contact" className="btn btn-primary">Get in touch</Link>
               <a href={RESUME_PDF} className="btn btn-secondary" target="_blank" rel="noreferrer">Download resume</a>
             </div>
           </div>

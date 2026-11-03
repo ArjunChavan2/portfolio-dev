@@ -362,6 +362,16 @@ p a:hover { text-decoration-color: currentColor; }
   :root { --aurora-1: #334155; --aurora-2: #3f3f46; --aurora-3: #1e293b; --aurora-opacity: 0.55; }
 }
 
+/* Route changes crossfade (links opt in with viewTransition); the header stays put and a
+   project's title morphs from its card into the page heading (see viewTransition.js). */
+.site-header { view-transition-name: site-header; }
+::view-transition-old(root), ::view-transition-new(root) { animation-duration: .22s; }
+::view-transition-group(*) { animation-duration: .35s; animation-timing-function: cubic-bezier(.2, 0, 0, 1); }
+main h1[style*="view-transition-name"] { animation: none; }
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(*), ::view-transition-old(*), ::view-transition-new(*) { animation: none !important; }
+}
+
 /* Page titles fade in fast and never blur, so the headline is readable on first paint */
 main h1 { animation: title-in .3s ease both; }
 @keyframes title-in { from { opacity: 0; } }

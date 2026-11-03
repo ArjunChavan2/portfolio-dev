@@ -2,6 +2,7 @@ import '../styles/project-detail.css';
 import Keyterms from '../components/Keyterms';
 import { lazy, Suspense, useEffect } from 'react';
 import { applyMeta, projectMeta } from '../seo';
+import { useTitleTransition } from '../viewTransition';
 import { Link, useParams } from 'react-router-dom';
 import { projects, projectBySlug } from '../data/projects';
 import AuroraBackground from '../components/AuroraBackground';
@@ -87,6 +88,7 @@ export default function ProjectDetail() {
   const { slug } = useParams();
   const project = projectBySlug(slug);
   useEffect(() => { if (project) applyMeta(projectMeta(project)); }, [project]);
+  const titleVT = useTitleTransition(slug);
   if (!project) return <NotFound />;
 
   const i = projects.indexOf(project);
@@ -101,11 +103,11 @@ export default function ProjectDetail() {
       <header className="pd-head">
         <AuroraBackground />
         <div className="container">
-          <Link to="/projects" className="pd-back">← All projects</Link>
+          <Link viewTransition to="/projects" className="pd-back">← All projects</Link>
           <div className="pd-head-grid">
             <div className="pd-head-copy">
               {showBadge && <p className="pd-badge">{badge}</p>}
-              <h1 key={project.slug}>{project.title}</h1>
+              <h1 key={project.slug} style={titleVT}>{project.title}</h1>
               <p className="pd-lede"><Keyterms text={project.summary} /></p>
               {(links.length > 0 || hasDemo) && (
                 <div className="pd-actions">
@@ -219,9 +221,9 @@ export default function ProjectDetail() {
           <nav className="pd-next-wrap" aria-label="Next project">
             <div className="pd-next-head">
               <h2>Next project</h2>
-              <Link to="/projects" className="text-link">All projects →</Link>
+              <Link viewTransition to="/projects" className="text-link">All projects →</Link>
             </div>
-            <Link to={`/projects/${next.slug}`} className="pd-next">
+            <Link viewTransition to={`/projects/${next.slug}`} className="pd-next">
               <div className="pd-next-media"><ProjectThumb project={next} /></div>
               <div className="pd-next-body">
                 <span className="pd-next-meta">{next.category}, {next.date}</span>
