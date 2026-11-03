@@ -17,7 +17,7 @@ export default function Layout() {
   const [, page = '', sub] = useLocation().pathname.split('/');
   // Nested routes (project pages) set their own in ProjectDetail; a child effect runs
   // before this one, so skip them here or this overwrites it on a direct load.
-  useEffect(() => { if (PAGES[page] && !sub) applyMeta(PAGES[page]); }, [page, sub]);
+  useEffect(() => { if (Object.hasOwn(PAGES, page) && !sub) applyMeta(PAGES[page]); }, [page, sub]);
   return (
     <div className="shell">
       <header className="site-header">
