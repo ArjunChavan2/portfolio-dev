@@ -1,4 +1,6 @@
-import { NavLink, Outlet, Link } from 'react-router-dom';
+import { useEffect } from 'react';
+import { NavLink, Outlet, Link, useLocation } from 'react-router-dom';
+import { PAGES, applyMeta } from '../seo';
 import resume from '../data/resume.json';
 import { RESUME_PDF, contact } from '../site';
 
@@ -12,6 +14,9 @@ const TABS = [
 const YEAR = new Date().getFullYear();
 
 export default function Layout() {
+  const page = useLocation().pathname.split('/')[1] || '';
+  // Project pages set their own in ProjectDetail; unknown routes keep the last title.
+  useEffect(() => { if (PAGES[page]) applyMeta(PAGES[page]); }, [page]);
   return (
     <div className="shell">
       <header className="site-header">

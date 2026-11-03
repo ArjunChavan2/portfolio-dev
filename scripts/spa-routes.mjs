@@ -10,6 +10,21 @@ const dist = path.join(root, 'dist');
 // Same base as vite.config.js: the deploy workflow sets VITE_BASE per repo.
 const base = process.env.VITE_BASE || '/';
 const shell = fs.readFileSync(path.join(dist, 'index.html'), 'utf8');
+const { PAGES, projectMeta } = await import('../src/seo.js');
+// Link previews need an absolute image URL; the origin is the same for dev and prod.
+const ORIGIN = 'https://arjunchavan2.github.io';
+const esc = (s) => s.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;');
+// Swap in a route's title and description and add Open Graph tags.
+const withMeta = ({ title, description }, route) => shell
+  .replace(/<title>.*?<\/title>/, `<title>${esc(title)}</title>`)
+  .replace(/(<meta name="description" content=")[^"]*"/, `$1${esc(description)}"`)
+  .replace('</head>', `    <meta property="og:title" content="${esc(title)}" />
+    <meta property="og:description" content="${esc(description)}" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="${ORIGIN}${base}${route}" />
+    <meta property="og:image" content="${ORIGIN}${base}media/headshot.jpg" />
+    <meta name="twitter:card" content="summary" />
+  </head>`);
 
 // Project slugs: explicit ones from src/data/slugs.json, plus the slugified title for
 // any synced project without one. Mirrors slugify() in src/data/projects.js.
@@ -18,13 +33,17 @@ const readJson = (file) => JSON.parse(fs.readFileSync(path.join(root, file), 'ut
 const slugByTitle = readJson('src/data/slugs.json');
 const titles = [...readJson('src/data/resume.json').projects.map((p) => p.title), ...Object.keys(slugByTitle)];
 const slugs = [...new Set(titles.map((t) => slugByTitle[t] || slugify(t)))];
+const projectBySlug = new Map(readJson('src/data/resume.json').projects.map((p) => [slugByTitle[p.title] || slugify(p.title), p]));
 
 const routes = ['projects', 'experience', 'contact', ...slugs.map((s) => `projects/${s}`)];
 for (const route of routes) {
   const dir = path.join(dist, route);
   fs.mkdirSync(dir, { recursive: true });
-  fs.writeFileSync(path.join(dir, 'index.html'), shell);
+  const proj = projectBySlug.get(route.replace('projects/', ''));
+  const meta = route.startsWith('projects/') && proj ? projectMeta(proj) : PAGES[route] || PAGES.projects;
+  fs.writeFileSync(path.join(dir, 'index.html'), withMeta(meta, `${route}/`));
 }
+fs.writeFileSync(path.join(dist, 'index.html'), withMeta(PAGES[''], ''));
 fs.writeFileSync(path.join(dist, '404.html'), shell);
 
 const redirect = (to) => `<!doctype html>
