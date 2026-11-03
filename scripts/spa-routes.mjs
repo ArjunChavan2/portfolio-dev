@@ -22,8 +22,8 @@ const withMeta = ({ title, description }, route) => shell
     <meta property="og:description" content="${esc(description)}" />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="${ORIGIN}${base}${route}" />
-    <meta property="og:image" content="${ORIGIN}${base}media/headshot.jpg" />
-    <meta name="twitter:card" content="summary" />
+    <meta property="og:image" content="${ORIGIN}${base}media/og.png" />
+    <meta name="twitter:card" content="summary_large_image" />
   </head>`);
 
 // Project slugs: explicit ones from src/data/slugs.json, plus the slugified title for
