@@ -92,7 +92,7 @@ p a:hover { text-decoration-color: currentColor; }
   display: inline-flex; align-items: center; justify-content: center; gap: 6px;
   padding: 11px 20px; border-radius: 8px; border: 1px solid transparent;
   font: 600 15px/1.2 var(--font); cursor: pointer; text-decoration: none;
-  transition: background-color .15s, border-color .15s, color .15s, box-shadow .15s;
+  transition: background-color .15s, border-color .15s, color .15s, box-shadow .15s, transform .1s;
 }
 .btn:hover { text-decoration: none; }
 .btn-primary { background: var(--accent); color: var(--on-accent); }
@@ -584,3 +584,9 @@ main h1 { animation: title-in .3s ease both; }
 
 /* Key terms in project summaries (see Keyterms.jsx) */
 .kt { color: var(--text); font-weight: 650; }
+
+/* Press state: controls dip slightly while held, so every click answers instantly */
+@media (prefers-reduced-motion: no-preference) {
+  :is(.chip, .pp-chip, .segmented button, .tab) { transition: transform .1s; }
+  :is(.btn, .chip, .pp-chip, .segmented button, .tab):active { transform: scale(.96); }
+}

@@ -205,3 +205,18 @@
   .page-project .pd-next-body { padding: 22px 20px; }
   .page-project .pd-body { padding-bottom: 64px; }
 }
+
+/* Pipeline stages ease in one after another as the diagram scrolls into view.
+   Scroll-driven animation: browsers without it just show the stages, and reduced motion skips it. */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .page-project .pd-flow .pd-stage {
+      animation: stage-in linear both; animation-timeline: view(); animation-range: entry 0% entry 55%;
+    }
+    .page-project .pd-flow .pd-stage:nth-child(2) { animation-range: entry 7% entry 62%; }
+    .page-project .pd-flow .pd-stage:nth-child(3) { animation-range: entry 14% entry 69%; }
+    .page-project .pd-flow .pd-stage:nth-child(4) { animation-range: entry 21% entry 76%; }
+    .page-project .pd-flow .pd-stage:nth-child(n+5) { animation-range: entry 28% entry 83%; }
+    @keyframes stage-in { from { opacity: 0; transform: translateY(16px); } }
+  }
+}
