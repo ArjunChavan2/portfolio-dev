@@ -335,6 +335,9 @@ p a:hover { text-decoration-color: currentColor; }
   .tabs { order: 3; width: 100%; margin: 0 -12px; overflow-x: auto; scrollbar-width: none; }
   .tab.active::after { bottom: 0; }
   .tab { padding: 10px 12px; }
+  /* Fitts: every tap target at least 44px tall on phones */
+  :is(.brand, .btn, .chip, .pp-chip, .segmented button, .text-link, .pd-back, .hero-links a, .footer-links a) { min-height: 44px; }
+  :is(.text-link, .pd-back, .hero-links a, .footer-links a) { display: inline-flex; align-items: center; }
   .section { padding: 56px 0; }
   .page-top { padding-top: 40px; }
   .hero { padding: 40px 0 56px; }

@@ -14,9 +14,10 @@ const TABS = [
 const YEAR = new Date().getFullYear();
 
 export default function Layout() {
-  const page = useLocation().pathname.split('/')[1] || '';
-  // Project pages set their own in ProjectDetail; unknown routes keep the last title.
-  useEffect(() => { if (PAGES[page]) applyMeta(PAGES[page]); }, [page]);
+  const [, page = '', sub] = useLocation().pathname.split('/');
+  // Nested routes (project pages) set their own in ProjectDetail; a child effect runs
+  // before this one, so skip them here or this overwrites it on a direct load.
+  useEffect(() => { if (PAGES[page] && !sub) applyMeta(PAGES[page]); }, [page, sub]);
   return (
     <div className="shell">
       <header className="site-header">
