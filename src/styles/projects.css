@@ -21,7 +21,7 @@
   display: inline-flex; align-items: center; gap: 8px;
   font: 500 14px/1.2 var(--font); padding: 8px 12px 8px 14px; border-radius: 999px;
   border: 1px solid var(--border-strong); background: var(--surface); color: var(--text-2);
-  cursor: pointer; transition: background-color .15s, border-color .15s, color .15s, transform .1s;
+  cursor: pointer; transition: background-color .15s var(--ease-out), border-color .15s var(--ease-out), color .15s var(--ease-out), transform .1s var(--ease-out);
 }
 .page-projects .pp-chip:hover { border-color: var(--text); color: var(--text); }
 .page-projects .pp-chip[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
@@ -48,21 +48,25 @@
 .page-projects .pp-show {
   display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); overflow: hidden;
   background: var(--surface); border: 1px solid var(--border); border-radius: 20px; box-shadow: var(--shadow);
-  color: var(--text); transition: border-color .2s, box-shadow .2s, transform .2s;
+  color: var(--text); transition: border-color .2s var(--ease-out), box-shadow .2s var(--ease-out), transform .2s var(--ease-out);
 }
 .page-projects .pp-list > li:nth-child(even) .pp-show { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); }
 .page-projects .pp-list > li:nth-child(even) .pp-show-media { order: 2; border-right: 0; border-left: 1px solid var(--border); }
-.page-projects .pp-show:hover {
-  text-decoration: none; color: var(--text); box-shadow: var(--shadow-hover);
-  border-color: var(--accent); transform: translateY(-3px);
-  box-shadow: var(--shadow-hover), 0 0 0 1px var(--accent);
+@media (hover: hover) and (pointer: fine) {
+  .page-projects .pp-show:hover {
+    text-decoration: none; color: var(--text); box-shadow: var(--shadow-hover);
+    border-color: var(--accent); transform: translateY(-3px);
+    box-shadow: var(--shadow-hover), 0 0 0 1px var(--accent);
+  }
 }
 .page-projects .pp-show-media {
   position: relative; display: grid; align-content: center; overflow: hidden;
   border-right: 1px solid var(--border); background: var(--bg-subtle);
 }
 .page-projects .pp-show-media .thumb { border: 0; }
-.page-projects .pp-show:hover .thumb :is(img, video) { transform: scale(1.04); }
+@media (hover: hover) and (pointer: fine) {
+  .page-projects .pp-show:hover .thumb :is(img, video) { transform: scale(1.04); }
+}
 .page-projects .pp-show-tag {
   position: absolute; left: 16px; top: 16px; padding: 5px 11px; border-radius: 999px;
   font-size: 12px; font-weight: 600; color: #f3f1ec; background: rgb(5 7 13 / 0.72); backdrop-filter: blur(6px);

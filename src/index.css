@@ -1,4 +1,5 @@
 :root {
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
   --bg: #faf9f6;
   --bg-subtle: #f3f2ee;
   --surface: #fdfcfa;
@@ -92,7 +93,7 @@ p a:hover { text-decoration-color: currentColor; }
   display: inline-flex; align-items: center; justify-content: center; gap: 6px;
   padding: 11px 20px; border-radius: 8px; border: 1px solid transparent;
   font: 600 15px/1.2 var(--font); cursor: pointer; text-decoration: none;
-  transition: background-color .15s, border-color .15s, color .15s, box-shadow .15s, transform .1s;
+  transition: background-color .15s var(--ease-out), border-color .15s var(--ease-out), color .15s var(--ease-out), box-shadow .15s var(--ease-out), transform .1s var(--ease-out);
 }
 .btn:hover { text-decoration: none; }
 .btn-primary { background: var(--accent); color: var(--on-accent); }
@@ -156,11 +157,13 @@ p a:hover { text-decoration-color: currentColor; }
 .hero-live {
   display: grid; gap: 10px; padding: 12px; border-radius: 16px; color: var(--text);
   background: var(--demo-bg); border: 1px solid var(--border); box-shadow: var(--shadow);
-  transition: border-color .2s, box-shadow .2s, transform .2s;
+  transition: border-color .2s var(--ease-out), box-shadow .2s var(--ease-out), transform .2s var(--ease-out);
 }
-.hero-live:hover {
-  text-decoration: none; color: var(--text); transform: translateY(-3px);
-  border-color: var(--accent); box-shadow: var(--shadow-hover), 0 0 0 1px var(--accent);
+@media (hover: hover) and (pointer: fine) {
+  .hero-live:hover {
+    text-decoration: none; color: var(--text); transform: translateY(-3px);
+    border-color: var(--accent); box-shadow: var(--shadow-hover), 0 0 0 1px var(--accent);
+  }
 }
 .hero-live-cap { display: inline-flex; align-items: center; gap: 8px; padding: 0 4px; font: 500 13px var(--mono); color: var(--text-2); }
 .hero-live-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--demo-start); box-shadow: 0 0 0 3px color-mix(in srgb, var(--demo-start) 25%, transparent); }
@@ -177,9 +180,11 @@ p a:hover { text-decoration-color: currentColor; }
   display: flex; flex-direction: column; overflow: hidden;
   background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
   color: var(--text); box-shadow: var(--shadow);
-  transition: transform .2s, box-shadow .2s, border-color .2s;
+  transition: transform .2s var(--ease-out), box-shadow .2s var(--ease-out), border-color .2s var(--ease-out);
 }
-.project-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-hover); border-color: var(--accent); box-shadow: var(--shadow-hover), 0 0 0 1px var(--accent); text-decoration: none; color: var(--text); }
+@media (hover: hover) and (pointer: fine) {
+  .project-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-hover); border-color: var(--accent); box-shadow: var(--shadow-hover), 0 0 0 1px var(--accent); text-decoration: none; color: var(--text); }
+}
 .project-card-body { display: flex; flex-direction: column; flex: 1; padding: 20px 22px 22px; }
 .project-card h3 { font-size: 18px; margin: 6px 0 8px; }
 .project-card p { color: var(--text-2); font-size: 15px; margin: 0 0 18px; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
@@ -188,8 +193,10 @@ p a:hover { text-decoration-color: currentColor; }
 .pill { flex-shrink: 0; font-size: 12px; font-weight: 600; color: var(--text); background: var(--bg-subtle); padding: 4px 10px; border-radius: 999px; }
 
 .thumb { aspect-ratio: 16 / 9; background: var(--bg-subtle); border-bottom: 1px solid var(--border); overflow: hidden; }
-.thumb img, .thumb video, .thumb-svg { width: 100%; height: 100%; object-fit: cover; transition: transform .5s ease; }
-.project-card:hover .thumb :is(img, video) { transform: scale(1.04); }
+.thumb img, .thumb video, .thumb-svg { width: 100%; height: 100%; object-fit: cover; transition: transform .3s var(--ease-out); }
+@media (hover: hover) and (pointer: fine) {
+  .project-card:hover .thumb :is(img, video) { transform: scale(1.04); }
+}
 .thumb-plain {
   display: grid; place-items: center;
   background:
@@ -361,7 +368,7 @@ p a:hover { text-decoration-color: currentColor; }
 /* Route changes crossfade (links opt in with viewTransition); the header stays put and a
    project's title morphs from its card into the page heading (see viewTransition.js). */
 .site-header { view-transition-name: site-header; }
-::view-transition-old(root), ::view-transition-new(root) { animation-duration: .22s; }
+::view-transition-old(root), ::view-transition-new(root) { animation-duration: .22s; animation-timing-function: var(--ease-out); }
 ::view-transition-group(*) { animation-duration: .35s; animation-timing-function: cubic-bezier(.2, 0, 0, 1); }
 main h1[style*="view-transition-name"] { animation: none; }
 @media (prefers-reduced-motion: reduce) {
@@ -419,12 +426,14 @@ main h1 { animation: title-in .3s ease both; }
 .lead-card {
   display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); margin-bottom: 24px; overflow: hidden;
   background: var(--surface); border: 1px solid var(--border); border-radius: 20px; box-shadow: var(--shadow);
-  color: var(--text); transition: border-color .2s, box-shadow .2s, transform .2s;
+  color: var(--text); transition: border-color .2s var(--ease-out), box-shadow .2s var(--ease-out), transform .2s var(--ease-out);
 }
-.lead-card:hover {
-  text-decoration: none; color: var(--text); box-shadow: var(--shadow-hover);
-  border-color: var(--accent); transform: translateY(-3px);
-  box-shadow: var(--shadow-hover), 0 0 0 1px var(--accent);
+@media (hover: hover) and (pointer: fine) {
+  .lead-card:hover {
+    text-decoration: none; color: var(--text); box-shadow: var(--shadow-hover);
+    border-color: var(--accent); transform: translateY(-3px);
+    box-shadow: var(--shadow-hover), 0 0 0 1px var(--accent);
+  }
 }
 .lead-media { display: grid; align-content: center; background: var(--demo-bg); border-right: 1px solid var(--border); padding: 20px; }
 .lead-media .thumb { border: 0; border-radius: 10px; }
@@ -571,7 +580,9 @@ main h1 { animation: title-in .3s ease both; }
 }
 
 /* Hovering a card with the A* thumbnail redraws its path, cell by cell from the start */
-:is(.project-card, .lead-card, .pp-show, .pd-next):hover .t-path { animation: path-in .2s ease backwards; animation-delay: calc(var(--i) * 15ms); }
+@media (hover: hover) and (pointer: fine) {
+  :is(.project-card, .lead-card, .pp-show, .pd-next):hover .t-path { animation: path-in .2s ease backwards; animation-delay: calc(var(--i) * 15ms); }
+}
 @keyframes path-in { from { opacity: 0; } }
 @media (prefers-reduced-motion: reduce) {
   :is(.project-card, .lead-card, .pp-show, .pd-next):hover { transform: none; }
@@ -583,8 +594,8 @@ main h1 { animation: title-in .3s ease both; }
 
 /* Press state: controls dip slightly while held, so every click answers instantly */
 @media (prefers-reduced-motion: no-preference) {
-  :is(.segmented button, .tab) { transition: transform .1s; }
-  :is(.btn, .pp-chip, .segmented button, .tab):active { transform: scale(.96); }
+  :is(.segmented button, .tab) { transition: transform .1s var(--ease-out); }
+  :is(.btn, .pp-chip, .segmented button, .tab):active { transform: scale(.97); }
 }
 
 /* Reading progress: a thin accent line fills across the top as the page scrolls.
@@ -599,3 +610,6 @@ main h1 { animation: title-in .3s ease both; }
     @keyframes read-progress { from { transform: scaleX(0); } to { transform: scaleX(1); } }
   }
 }
+
+/* Cards are links: keep the global a:hover underline off them even where the lift is hover-gated (touch). */
+:is(.hero-live, .project-card, .lead-card, .pp-show, .pd-next):hover { text-decoration: none; }
