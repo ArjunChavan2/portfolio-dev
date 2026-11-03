@@ -1,3 +1,4 @@
+import { useTitleTransition } from '../viewTransition';
 import '../styles/projects.css';
 import Keyterms from '../components/Keyterms';
 import { useRef, useState } from 'react';
@@ -18,16 +19,17 @@ const years = projects.flatMap((p) => (p.date.match(/\d{4}/g) || []).map(Number)
 const span = years.length ? `${Math.min(...years)} to ${Math.max(...years)}` : '';
 
 function LeadProject({ project }) {
+  const titleVT = useTitleTransition(project.slug);
   const tag = mediaLabel(project);
   return (
-    <Link to={`/projects/${project.slug}`} className="lead-card pp-lead">
+    <Link viewTransition to={`/projects/${project.slug}`} className="lead-card pp-lead">
       <div className="lead-media"><ProjectThumb project={project} /></div>
       <div className="lead-body">
         <div className="card-meta">
           <span>{project.category}</span>
           <span>{project.date}</span>
         </div>
-        <h3>{project.title}</h3>
+        <h3 style={titleVT}>{project.title}</h3>
         <p><Keyterms text={project.summary} /></p>
         <ul className="tags">
           {project.stack.slice(0, 5).map((t) => <li key={t}>{t}</li>)}
@@ -42,12 +44,13 @@ function LeadProject({ project }) {
 
 // Every project gets a full-width showcase: big media, its headline stat first, then the story.
 function ProjectRow({ project }) {
+  const titleVT = useTitleTransition(project.slug);
   const tag = mediaLabel(project);
   // Lead with the stat only when it's a number; a thumb without a poster already shows it.
   const stat = project.media?.poster && /\d/.test(project.highlight?.value) && project.highlight;
   return (
     <li>
-      <Link to={`/projects/${project.slug}`} className="pp-show">
+      <Link viewTransition to={`/projects/${project.slug}`} className="pp-show">
         <div className="pp-show-media">
           <ProjectThumb project={project} />
           {tag && <span className="pp-show-tag">{tag}</span>}
@@ -63,7 +66,7 @@ function ProjectRow({ project }) {
               <span>{stat.label}</span>
             </p>
           )}
-          <h3>{project.title}</h3>
+          <h3 style={titleVT}>{project.title}</h3>
           <p><Keyterms text={project.summary} /></p>
           <ul className="tags">
             {project.stack.slice(0, 4).map((t) => <li key={t}>{t}</li>)}

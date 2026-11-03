@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { Routes, Route, useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import Layout from './components/Layout';
 import Home from './pages/Home';
 import Projects from './pages/Projects';
@@ -14,20 +14,17 @@ function ScrollToTop() {
   return null;
 }
 
-export default function App() {
-  return (
-    <>
-      <ScrollToTop />
-      <Routes>
-        <Route element={<Layout />}>
-          <Route index element={<Home />} />
-          <Route path="projects" element={<Projects />} />
-          <Route path="projects/:slug" element={<ProjectDetail />} />
-          <Route path="experience" element={<Experience />} />
-          <Route path="contact" element={<Contact />} />
-          <Route path="*" element={<NotFound />} />
-        </Route>
-      </Routes>
-    </>
-  );
-}
+// Declared as route objects (not nested <Routes>) so links can use view transitions.
+export const routes = [
+  {
+    element: <><ScrollToTop /><Layout /></>,
+    children: [
+      { index: true, element: <Home /> },
+      { path: 'projects', element: <Projects /> },
+      { path: 'projects/:slug', element: <ProjectDetail /> },
+      { path: 'experience', element: <Experience /> },
+      { path: 'contact', element: <Contact /> },
+      { path: '*', element: <NotFound /> },
+    ],
+  },
+];

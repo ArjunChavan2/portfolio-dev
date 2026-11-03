@@ -22,10 +22,10 @@ export default function Layout() {
     <div className="shell">
       <header className="site-header">
         <div className="container header-inner">
-          <Link to="/" className="brand">{resume.name}</Link>
+          <Link viewTransition to="/" className="brand">{resume.name}</Link>
           <nav className="tabs" aria-label="Primary">
             {TABS.map((t) => (
-              <NavLink key={t.to} to={t.to} end={t.end} className={({ isActive }) => (isActive ? 'tab active' : 'tab')}>
+              <NavLink viewTransition key={t.to} to={t.to} end={t.end} className={({ isActive }) => (isActive ? 'tab active' : 'tab')}>
                 {t.label}
               </NavLink>
             ))}

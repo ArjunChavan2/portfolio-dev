@@ -216,7 +216,7 @@ export default function WorkPath({ onShowProjects }) {
                   <li key={id} className={`wp-step k-${n.kind}`}>
                     <div className="wp-step-head">
                       <span className="wp-kind">{KIND_NAME[n.kind]}</span>
-                      {n.href ? <Link to={n.href}>{n.title}</Link> : <span className="wp-step-name">{n.title}</span>}
+                      {n.href ? <Link viewTransition to={n.href}>{n.title}</Link> : <span className="wp-step-name">{n.title}</span>}
                     </div>
                     {ev && (ev.area ? (
                       <p className="wp-proof wp-proof-area">Both are {ev.area.toLowerCase()} projects.</p>
