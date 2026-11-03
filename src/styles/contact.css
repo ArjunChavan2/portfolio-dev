@@ -42,7 +42,9 @@
 .page-contact .contact-method:hover .contact-method-value { color: var(--text); }
 .page-contact .contact-method-note { font-size: 14px; color: var(--muted); }
 .page-contact .contact-method-arrow { color: var(--muted); font-size: 16px; transition: transform .15s, color .15s; }
-.page-contact .contact-method:hover .contact-method-arrow { color: var(--text); transform: translateX(2px); }
+@media (hover: hover) and (pointer: fine) {
+  .page-contact .contact-method:hover .contact-method-arrow { color: var(--text); transform: translateX(2px); }
+}
 
 /* Compose panel */
 .page-contact .contact-compose {

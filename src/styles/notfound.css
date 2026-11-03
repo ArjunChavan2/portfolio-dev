@@ -34,7 +34,9 @@
 .page-notfound .nf-link:hover .nf-link-label { color: var(--text); }
 .page-notfound .nf-link-note { font-size: 15px; color: var(--muted); }
 .page-notfound .nf-link-arrow { color: var(--muted); transition: transform .15s, color .15s; }
-.page-notfound .nf-link:hover .nf-link-arrow { color: var(--text); transform: translateX(3px); }
+@media (hover: hover) and (pointer: fine) {
+  .page-notfound .nf-link:hover .nf-link-arrow { color: var(--text); transform: translateX(3px); }
+}
 
 @media (max-width: 640px) {
   .page-notfound { padding: 48px 0 72px; min-height: 0; }
